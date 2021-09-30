@@ -1,6 +1,6 @@
-# heroes
+# Heroes
 
-A new Flutter project.
+App com lista de todos os Super-heróis e seus super poderes.
 
 ## Getting Started
 
