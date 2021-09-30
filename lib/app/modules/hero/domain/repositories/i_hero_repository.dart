@@ -1,6 +1,5 @@
 import 'package:heroes/app/modules/hero/domain/entities/hero_entity.dart';
-import 'package:heroes/app/modules/hero/domain/entities/hero_filter_entity.dart';
 
 abstract class IHeroRepository {
-  Future<List<HeroEntity>> findByFilter(HeroFilterEntity filter);
+  Future<List<HeroEntity>> findByName(String name);
 }

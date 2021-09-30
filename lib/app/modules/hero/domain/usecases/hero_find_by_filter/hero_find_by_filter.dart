@@ -14,7 +14,7 @@ class HeroFindByFilter implements IHeroFindByFilter {
   Future<List<HeroEntity>> call(HeroFilterEntity filter) async {
     if (!filter.isValid) throw ValidationError('Digite o nome de um herói para buscar');
 
-    var lstHero = await _repository.findByFilter(filter);
+    var lstHero = await _repository.findByName(filter.name);
 
     var lstFiltered = lstHero
         .where((v) =>

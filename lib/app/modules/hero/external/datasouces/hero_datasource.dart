@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:heroes/app/modules/hero/infra/datasources/i_hero_datasource.dart';
 import 'package:heroes/app/modules/hero/infra/models/hero_model.dart';
-import 'package:heroes/app/modules/hero/infra/models/hero_filter_model.dart';
 import 'package:heroes/app/shared/connect/dio_connect_interface.dart';
 import 'package:heroes/app/shared/connect/models/response_data.dart';
 
@@ -13,11 +12,11 @@ class HeroDatasource implements IHeroDatasource {
   HeroDatasource(this._dioConnect);
 
   @override
-  Future<List<HeroModel>> findByFilter(HeroFilterModel filter) async {
+  Future<List<HeroModel>> findByName(String name) async {
     try {
       var client = _dioConnect.instance;
 
-      var response = await client.get('/search/${filter.name}');
+      var response = await client.get('/search/$name');
 
       var responseData = ResponseDataModel.fromMap(response.data);
 
