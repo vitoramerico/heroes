@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:heroes/app/modules/hero/domain/entities/hero_appearance_entity.dart';
 import 'package:heroes/app/modules/hero/domain/entities/hero_work_entity.dart';
 
 import 'description_widget.dart';

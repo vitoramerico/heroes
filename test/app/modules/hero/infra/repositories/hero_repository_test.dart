@@ -15,26 +15,26 @@ import 'hero_repository_test.mocks.dart';
 
 @GenerateMocks([HeroDatasource])
 void main() {
+  late MockHeroDatasource datasource;
+  late IHeroRepository repository;
+
   setUpAll(() {
     initModules([
       HeroModule()
     ], replaceBinds: [
       Bind.singleton<IHeroDatasource>((i) => MockHeroDatasource()),
     ]);
+
+    datasource = Modular.get<MockHeroDatasource>();
+    repository = Modular.get<IHeroRepository>();
   });
 
   test('deve estar com todas as instancias injetadas', () {
-    final datasource = Modular.get<IHeroDatasource>();
-    final repository = Modular.get<IHeroRepository>();
-
     expect(datasource, isA<MockHeroDatasource>());
     expect(repository, isA<HeroRepository>());
   });
 
   test('deve lançar um erro do tipo DatasourceError', () async {
-    final datasource = Modular.get<MockHeroDatasource>();
-    final repository = Modular.get<IHeroRepository>();
-
     when(datasource.findByName(any)).thenThrow(HttpResponseError(
       body: 'Erro desconhecido',
       statusError: 'Erro interno do servidor',

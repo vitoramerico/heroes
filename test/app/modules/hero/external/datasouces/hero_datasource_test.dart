@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:heroes/app/app_module.dart';
 import 'package:heroes/app/modules/hero/external/datasouces/hero_datasource.dart';
 import 'package:heroes/app/modules/hero/infra/datasources/i_hero_datasource.dart';
 import 'package:heroes/app/modules/hero/infra/models/hero_model.dart';
+import 'package:heroes/app/modules/hero/presenter/hero_module.dart';
 import 'package:heroes/app/shared/connect/dio_connect_interface.dart';
 import 'package:heroes/app/shared/connect/errors/http_response_error.dart';
 import 'package:mockito/annotations.dart';
@@ -26,31 +28,28 @@ class MockDioConnect implements IDioConnect {
   MockDio get instance => _dio;
 }
 
-class MyModule extends Module {
-  @override
-  List<Bind> get binds => [
-        Bind.singleton<IDioConnect>((i) => MockDioConnect()),
-        Bind.singleton<IHeroDatasource>((i) => HeroDatasource(i.get<MockDioConnect>())),
-      ];
-}
-
 void main() {
+  late MockDioConnect mockDioConnect;
+  late IHeroDatasource datasource;
+
   setUpAll(() {
-    initModules([MyModule()]);
+    initModules([
+      AppModule(),
+      HeroModule()
+    ], replaceBinds: [
+      Bind.singleton<IDioConnect>((i) => MockDioConnect(), export: true),
+    ]);
+
+    mockDioConnect = Modular.get<MockDioConnect>();
+    datasource = Modular.get<IHeroDatasource>();
   });
 
   test('deve estar com todas as instancias injetadas', () {
-    final dioConnect = Modular.get<IDioConnect>();
-    final heroDatasource = Modular.get<IHeroDatasource>();
-
-    expect(dioConnect, isA<MockDioConnect>());
-    expect(heroDatasource, isA<HeroDatasource>());
+    expect(mockDioConnect, isA<MockDioConnect>());
+    expect(datasource, isA<HeroDatasource>());
   });
 
   test('deve retornar uma lista com os registros', () async {
-    final mockDioConnect = Modular.get<MockDioConnect>();
-    final datasource = Modular.get<IHeroDatasource>();
-
     when(mockDioConnect.instance.get(any)).thenAnswer((_) async {
       return Response(
         data: jsonDecode(jsonData),
@@ -65,9 +64,6 @@ void main() {
   });
 
   test('deve lançar um erro quando o servidor retorna erro no response', () async {
-    final mockDioConnect = Modular.get<MockDioConnect>();
-    final datasource = Modular.get<IHeroDatasource>();
-
     when(mockDioConnect.instance.get(any)).thenAnswer((_) async {
       return Response(
         data: jsonDecode(jsonDataError),
@@ -79,9 +75,6 @@ void main() {
   });
 
   test('deve lançar um erro do tipo HttpResponseError', () async {
-    final mockDioConnect = Modular.get<MockDioConnect>();
-    final datasource = Modular.get<IHeroDatasource>();
-
     var requestOptions = RequestOptions(path: '');
 
     when(mockDioConnect.instance.get(any)).thenThrow(DioError(
@@ -93,9 +86,6 @@ void main() {
   });
 
   test('deve lançar um erro do tipo HttpResponseError com as informações preenchidas', () async {
-    final mockDioConnect = Modular.get<MockDioConnect>();
-    final datasource = Modular.get<IHeroDatasource>();
-
     var requestOptions = RequestOptions(path: '');
     var statusError = 'Erro interno no servidor';
     var error = Exception('erro');
