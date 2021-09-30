@@ -6,6 +6,9 @@ class HeroAppearanceEntity {
   final String eyeColor;
   final String hairColor;
 
+  String get heightInCm => height.last;
+  String get weightInKg => weight.last;
+
   HeroAppearanceEntity({
     required this.gender,
     required this.race,

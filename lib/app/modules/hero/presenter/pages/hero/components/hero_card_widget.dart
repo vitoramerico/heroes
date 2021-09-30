@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:heroes/app/modules/hero/domain/entities/hero_entity.dart';
 
-import 'loading_widget.dart';
+import '../../../../../../shared/components/app_loading_widget.dart';
 
 class HeroCardWidget extends StatelessWidget {
   final HeroEntity hero;
@@ -34,7 +34,7 @@ class HeroCardWidget extends StatelessWidget {
                 borderRadius: const BorderRadius.all(Radius.circular(4)),
               ),
             ),
-            placeholder: (context, url) => const SizedBox(width: 60, child: LoadingWidget()),
+            placeholder: (context, url) => const SizedBox(width: 60, child: AppLoadingWidget()),
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),

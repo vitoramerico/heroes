@@ -7,6 +7,8 @@ class HeroBiographyEntity {
   final String publisher;
   final String alignment;
 
+  String get concatenateAliases => aliases.join(', ');
+
   HeroBiographyEntity({
     required this.fullName,
     required this.alterEgos,

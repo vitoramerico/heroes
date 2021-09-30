@@ -8,9 +8,9 @@ import '../../../domain/errors/errors.dart';
 import '../../stores/hero_filter_store.dart';
 import '../../stores/hero_list_store.dart';
 import 'components/dialog_filter_widget.dart';
-import 'components/error_widget.dart';
+import '../../../../../shared/components/app_error_widget.dart';
 import 'components/hero_list_widget.dart';
-import 'components/loading_widget.dart';
+import '../../../../../shared/components/app_loading_widget.dart';
 import 'components/search_widget.dart';
 
 class HeroPage extends StatefulWidget {
@@ -62,8 +62,8 @@ class _HeroPageState extends State<HeroPage> {
                     },
                   );
                 },
-                onLoading: (_) => const LoadingWidget(),
-                onError: (context, error) => MyErrorWidget(error: error?.message),
+                onLoading: (_) => const AppLoadingWidget(),
+                onError: (context, error) => AppErrorWidget(error: error?.message),
               ),
             ),
           ],
