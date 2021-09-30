@@ -7,11 +7,11 @@ class HeroPowerstatsEntity {
   final int combat;
 
   HeroPowerstatsEntity({
-    required this.intelligence,
-    required this.strength,
-    required this.speed,
-    required this.durability,
-    required this.power,
-    required this.combat,
+    this.intelligence = 0,
+    this.strength = 0,
+    this.speed = 0,
+    this.durability = 0,
+    this.power = 0,
+    this.combat = 0,
   });
 }

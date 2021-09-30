@@ -25,4 +25,26 @@ class HeroEntity {
     required this.connections,
     required this.image,
   });
+
+  HeroEntity copyWith({
+    String? id,
+    String? name,
+    HeroPowerstatsEntity? powerstats,
+    HeroBiographyEntity? biography,
+    HeroAppearanceEntity? appearance,
+    HeroWorkEntity? work,
+    HeroConnectionsEntity? connections,
+    HeroImageEntity? image,
+  }) {
+    return HeroEntity(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      powerstats: powerstats ?? this.powerstats,
+      biography: biography ?? this.biography,
+      appearance: appearance ?? this.appearance,
+      work: work ?? this.work,
+      connections: connections ?? this.connections,
+      image: image ?? this.image,
+    );
+  }
 }
