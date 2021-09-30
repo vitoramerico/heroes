@@ -22,9 +22,21 @@ dev_dependencies:
   flutter_lints: ^1.0.4
   triple_test: ^0.0.8
   modular_test: ^1.0.1+1
-  mocktail: ^0.1.4
+  mockito: ^5.0.16
+  build_runner: ^2.1.2
 
 flutter:
   uses-material-design: true
   assets:
     - .env
+
+## Slidy Scripts
+vars: 
+  clean: flutter clean
+  get: flutter pub get
+  runner: flutter pub run build_runner
+scripts: 
+  build: $runner build --delete-conflicting-outputs
+  watch: $runner watch --delete-conflicting-outputs
+  build_clean: $clean & $get & $runner build --delete-conflicting-outputs
+  update_icon: flutter pub run flutter_launcher_icons:main
