@@ -24,50 +24,53 @@ class _HeroPageState extends State<HeroPage> {
   final storeFilter = Modular.get<HeroFilterStore>();
   final store = Modular.get<HeroListStore>();
 
+  final tecSearch = TextEditingController();
+
   @override
   void initState() {
     super.initState();
 
+    tecSearch.text = storeFilter.state.name;
     store.fetchData(storeFilter.state);
+  }
+
+  @override
+  void dispose() {
+    tecSearch.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Super-heróis'),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            SearchWidgetDart(
-              hintText: 'Digite o nome do super-herói',
-              textInputAction: TextInputAction.search,
-              prefixIcon: const Icon(Icons.search),
-              onChanged: (v) {
-                storeFilter.update(storeFilter.state.copyWith(name: v));
-                store.fetchData(storeFilter.state);
+      body: Column(
+        children: [
+          SearchWidgetDart(
+            controller: tecSearch,
+            hintText: 'Digite o nome do super-herói',
+            textInputAction: TextInputAction.search,
+            prefixIcon: const Icon(Icons.search),
+            onChanged: (v) {
+              storeFilter.update(storeFilter.state.copyWith(name: v));
+              store.fetchData(storeFilter.state);
+            },
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: ScopedBuilder<HeroListStore, QueryError, List<HeroEntity>>(
+              onState: (context, value) {
+                return HeroListWidgetDart(
+                  lstHero: value,
+                  onPressed: (hero) {
+                    Modular.to.pushNamed(Routes.heroDetails, arguments: hero, forRoot: true);
+                  },
+                );
               },
+              onLoading: (_) => const AppLoadingWidget(),
+              onError: (context, error) => AppErrorWidget(error: error?.message),
             ),
-            const SizedBox(height: 8),
-            Expanded(
-              child: ScopedBuilder<HeroListStore, QueryError, List<HeroEntity>>(
-                onState: (context, value) {
-                  return HeroListWidgetDart(
-                    lstHero: value,
-                    onPressed: (hero) {
-                      Modular.to.pushNamed(Routes.heroDetails, arguments: hero);
-                    },
-                  );
-                },
-                onLoading: (_) => const AppLoadingWidget(),
-                onError: (context, error) => AppErrorWidget(error: error?.message),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showDialogFilters,

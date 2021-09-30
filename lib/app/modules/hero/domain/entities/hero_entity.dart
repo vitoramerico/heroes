@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 import 'hero_appearance_entity.dart';
 import 'hero_biography_entity.dart';
 import 'hero_connections_entity.dart';
@@ -5,7 +7,7 @@ import 'hero_image_entity.dart';
 import 'hero_powerstats_entity.dart';
 import 'hero_work_entity.dart';
 
-class HeroEntity {
+class HeroEntity extends Equatable {
   final String id;
   final String name;
   final HeroPowerstatsEntity powerstats;
@@ -15,7 +17,7 @@ class HeroEntity {
   final HeroConnectionsEntity connections;
   final HeroImageEntity image;
 
-  HeroEntity({
+  const HeroEntity({
     required this.id,
     required this.name,
     required this.powerstats,
@@ -47,4 +49,14 @@ class HeroEntity {
       image: image ?? this.image,
     );
   }
+
+  @override
+  List<Object> get props => [
+        powerstats.intelligence,
+        powerstats.strength,
+        powerstats.speed,
+        powerstats.durability,
+        powerstats.power,
+        powerstats.combat,
+      ];
 }
